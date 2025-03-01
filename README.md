@@ -1,16 +1,7 @@
-# subscription_app
+### README.md
 
-A new Flutter project.
+Flutter app with Firebase for subscription management. Features plan subscription, renewal, and cancellation. Runs on Android. Setup: `flutter pub get`, `flutterfire configure --project=subscription-app1`, `firebase deploy --only firestore:rules`, `flutter run -d 3827aa7e`.
 
-## Getting Started
-
-This project is a starting point for a Flutter application.
-
-A few resources to get you started if this is your first Flutter project:
-
-- [Lab: Write your first Flutter app](https://docs.flutter.dev/get-started/codelab)
-- [Cookbook: Useful Flutter samples](https://docs.flutter.dev/cookbook)
-
-For help getting started with Flutter development, view the
-[online documentation](https://docs.flutter.dev/), which offers tutorials,
-samples, guidance on mobile development, and a full API reference.
+#### Previews
+- **Frontend**: ![Frontend Preview](frontend_preview.png)
+- **Backend**: ![Backend Preview](backend_preview.png)
