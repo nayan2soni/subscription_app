@@ -1,6 +1,8 @@
 {
   "projects": {
-    "subscription": "subscription-app1"
+    "subscription": "subscription-app1",
+    "loyaltyapp": "loyalty-app-98f30",
+    "subapp": "subscription-app1"
   },
   "targets": {},
   "etags": {}

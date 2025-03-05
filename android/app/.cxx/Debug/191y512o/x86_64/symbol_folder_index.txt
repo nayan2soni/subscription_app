@@ -1,0 +1,1 @@
+/home/Bruce/subscription_app_fresh/subscription_app_new/build/app/intermediates/cxx/Debug/191y512o/obj/x86_64

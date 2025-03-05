@@ -1,0 +1,2 @@
+/home/Bruce/subscription_app_fresh/subscription_app_new/android/app/.cxx/RelWithDebInfo/1u4p3lr1/armeabi-v7a/CMakeFiles/edit_cache.dir
+/home/Bruce/subscription_app_fresh/subscription_app_new/android/app/.cxx/RelWithDebInfo/1u4p3lr1/armeabi-v7a/CMakeFiles/rebuild_cache.dir

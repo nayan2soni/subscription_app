@@ -1,0 +1,2 @@
+/home/Bruce/subscription_app_fresh/subscription_app_new/android/app/.cxx/Debug/191y512o/x86/CMakeFiles/edit_cache.dir
+/home/Bruce/subscription_app_fresh/subscription_app_new/android/app/.cxx/Debug/191y512o/x86/CMakeFiles/rebuild_cache.dir

@@ -1,0 +1,1 @@
+/home/Bruce/subscription_app_fresh/subscription_app_new/build/app/intermediates/cxx/RelWithDebInfo/1u4p3lr1/obj/x86
