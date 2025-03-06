@@ -2,11 +2,14 @@ import 'dart:async';
 import 'package:flutter/material.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:firebase_auth/firebase_auth.dart';
+import 'package:google_sign_in/google_sign_in.dart';
 import 'package:provider/provider.dart';
 import 'package:subscription_app/screens/home_screen.dart';
 import 'package:subscription_app/screens/subscription_status_screen.dart';
 import 'package:subscription_app/screens/plan_selection_screen.dart';
 import 'package:subscription_app/screens/login_screen.dart';
+import 'package:subscription_app/screens/signup_screen.dart';
+import 'package:subscription_app/screens/payment_screen.dart';
 import 'package:subscription_app/services/subscription_service.dart';
 import 'firebase_options.dart';
 
@@ -27,15 +30,13 @@ void main() async {
 class MyApp extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
-    final themeProvider = Provider.of<ThemeProvider>(context);
     return MaterialApp(
       theme: ThemeData.light(),
       darkTheme: ThemeData.dark(),
-      themeMode: themeProvider.themeMode,
       home: StreamBuilder<User?>(
         stream: FirebaseAuth.instance.authStateChanges(),
         builder: (context, snapshot) {
-          print('Auth state: ${snapshot.data?.uid ?? "No user"}');
+          print('Auth state: ${snapshot.data?.uid ?? "No user"}, Connection: ${snapshot.connectionState}');
           if (snapshot.connectionState == ConnectionState.waiting) {
             return Center(child: CircularProgressIndicator());
           }
@@ -45,6 +46,8 @@ class MyApp extends StatelessWidget {
       routes: {
         '/status': (context) => SubscriptionStatusScreen(),
         '/plans': (context) => PlanSelectionScreen(),
+        '/payment': (context) => PaymentScreen(),
+        '/signup': (context) => SignupScreen(),
       },
     );
   }
@@ -64,5 +67,7 @@ class ThemeProvider with ChangeNotifier {
 class AuthService {
   static Future<void> signOut() async {
     await FirebaseAuth.instance.signOut();
+    await GoogleSignIn().signOut(); // Clear Google Sign-In session
+    print('Signed out from Firebase and Google');
   }
 }

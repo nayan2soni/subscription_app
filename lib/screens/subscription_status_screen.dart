@@ -27,26 +27,24 @@ class SubscriptionStatusScreen extends StatelessWidget {
           final status = data['subscriptionStatus'] ?? 'None';
           final plan = data['currentPlan'] ?? 'None';
           final renewalDate = (data['renewalDate'] as Timestamp?)?.toDate();
+          final walletBalance = data['walletBalance'] ?? 0;
 
           return Padding(
             padding: EdgeInsets.all(16.0),
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
-                Text('Status: $status', style: Theme.of(context).textTheme.headlineSmall),
+                Text('Status: $status'),
                 SizedBox(height: 10),
-                Text('Plan: $plan', style: Theme.of(context).textTheme.titleLarge),
+                Text('Plan: $plan'),
                 SizedBox(height: 10),
-                Text(
-                  'Renewal Date: ${renewalDate != null ? renewalDate.toString() : 'N/A'}',
-                  style: Theme.of(context).textTheme.bodyLarge,
-                ),
+                Text('Renewal Date: ${renewalDate != null ? renewalDate.toString() : 'N/A'}'),
                 SizedBox(height: 20),
                 ElevatedButton(
                   onPressed: () async {
                     await subscriptionService.checkAndRenewSubscriptions();
                     ScaffoldMessenger.of(context).showSnackBar(
-                      SnackBar(content: Text('Renewal checked')),
+                      SnackBar(content: Text(status == 'expired' ? 'Grace period applied' : 'Renewal checked')),
                     );
                   },
                   child: Text('Check Renewal'),
@@ -55,10 +53,19 @@ class SubscriptionStatusScreen extends StatelessWidget {
                   onPressed: () async {
                     await subscriptionService.cancelSubscription();
                     ScaffoldMessenger.of(context).showSnackBar(
-                      SnackBar(content: Text('Subscription cancelled')),
+                      SnackBar(content: Text('Subscription will remain active until $renewalDate')),
                     );
                   },
                   child: Text('Cancel Subscription'),
+                ),
+                SizedBox(height: 20),
+                ElevatedButton(
+                  onPressed: () {
+                    ScaffoldMessenger.of(context).showSnackBar(
+                      SnackBar(content: Text('Wallet Balance: $walletBalance')),
+                    );
+                  },
+                  child: Text('Check Wallet Balance'),
                 ),
               ],
             ),

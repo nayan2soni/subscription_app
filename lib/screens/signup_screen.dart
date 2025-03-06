@@ -1,55 +1,30 @@
 import 'package:flutter/material.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
-import 'package:google_sign_in/google_sign_in.dart';
 import 'package:subscription_app/screens/home_screen.dart';
-import 'package:subscription_app/screens/signup_screen.dart';
 
-class LoginScreen extends StatefulWidget {
+class SignupScreen extends StatefulWidget {
   @override
-  _LoginScreenState createState() => _LoginScreenState();
+  _SignupScreenState createState() => _SignupScreenState();
 }
 
-class _LoginScreenState extends State<LoginScreen> {
+class _SignupScreenState extends State<SignupScreen> {
   final _emailController = TextEditingController();
   final _passwordController = TextEditingController();
   final _auth = FirebaseAuth.instance;
   String? _errorMessage;
 
-  Future<void> _loginWithEmailPassword() async {
+  Future<void> _signupWithEmailPassword() async {
     setState(() => _errorMessage = null);
     try {
-      UserCredential userCredential = await _auth.signInWithEmailAndPassword(
+      UserCredential userCredential = await _auth.createUserWithEmailAndPassword(
         email: _emailController.text.trim(),
         password: _passwordController.text.trim(),
       );
       await _saveUserData(userCredential.user!);
       Navigator.pushReplacementNamed(context, '/');
     } catch (e) {
-      setState(() => _errorMessage = 'Email Login failed: $e');
-    }
-  }
-
-  Future<void> _signInWithGoogle() async {
-    setState(() => _errorMessage = null);
-    try {
-      final GoogleSignIn googleSignIn = GoogleSignIn();
-      final GoogleSignInAccount? googleUser = await googleSignIn.signIn();
-      if (googleUser == null) {
-        setState(() => _errorMessage = 'Google Sign-In cancelled');
-        return;
-      }
-
-      final GoogleSignInAuthentication googleAuth = await googleUser.authentication;
-      final credential = GoogleAuthProvider.credential(
-        accessToken: googleAuth.accessToken,
-        idToken: googleAuth.idToken,
-      );
-      UserCredential userCredential = await _auth.signInWithCredential(credential);
-      await _saveUserData(userCredential.user!);
-      Navigator.pushReplacementNamed(context, '/');
-    } catch (e) {
-      setState(() => _errorMessage = 'Google Sign-In failed: $e');
+      setState(() => _errorMessage = 'Sign Up failed: $e');
     }
   }
 
@@ -58,7 +33,7 @@ class _LoginScreenState extends State<LoginScreen> {
     await userDoc.set({
       'userId': user.uid,
       'email': user.email,
-      'displayName': user.displayName ?? 'User',
+      'displayName': 'New User',
       'lastLogin': DateTime.now().toUtc(),
     }, SetOptions(merge: true));
   }
@@ -73,7 +48,7 @@ class _LoginScreenState extends State<LoginScreen> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(title: Text('Login')),
+      appBar: AppBar(title: Text('Sign Up')),
       body: Padding(
         padding: EdgeInsets.all(16.0),
         child: Column(
@@ -95,19 +70,13 @@ class _LoginScreenState extends State<LoginScreen> {
               Text(_errorMessage!, style: TextStyle(color: Colors.red)),
             SizedBox(height: 20),
             ElevatedButton(
-              onPressed: _loginWithEmailPassword,
-              child: Text('Login with Email'),
-            ),
-            SizedBox(height: 10),
-            ElevatedButton.icon(
-              icon: Icon(Icons.login),
-              label: Text('Continue with Google'),
-              onPressed: _signInWithGoogle,
+              onPressed: _signupWithEmailPassword,
+              child: Text('Sign Up'),
             ),
             SizedBox(height: 10),
             TextButton(
-              onPressed: () => Navigator.pushNamed(context, '/signup'),
-              child: Text('Don\'t have an account? Sign Up'),
+              onPressed: () => Navigator.pop(context),
+              child: Text('Already have an account? Login'),
             ),
           ],
         ),

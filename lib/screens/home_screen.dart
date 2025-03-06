@@ -2,11 +2,14 @@ import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:subscription_app/main.dart';
 import 'package:subscription_app/screens/login_screen.dart';
+import 'package:subscription_app/services/subscription_service.dart';
 
 class HomeScreen extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final themeProvider = Provider.of<ThemeProvider>(context);
+    final subscriptionService = Provider.of<SubscriptionService>(context, listen: false);
+
     return Scaffold(
       appBar: AppBar(
         title: Text('Subscription App'),
@@ -41,6 +44,16 @@ class HomeScreen extends StatelessWidget {
             ElevatedButton(
               onPressed: () => Navigator.pushNamed(context, '/status'),
               child: Text('View Subscription Status'),
+            ),
+            SizedBox(height: 20),
+            ElevatedButton(
+              onPressed: () async {
+                await subscriptionService.checkAndRenewSubscriptions();
+                ScaffoldMessenger.of(context).showSnackBar(
+                  SnackBar(content: Text('Renewal checked')),
+                );
+              },
+              child: Text('Check Renewal Manually'),
             ),
           ],
         ),
